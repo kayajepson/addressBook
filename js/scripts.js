@@ -38,10 +38,10 @@ Travel.prototype.deletePlace = function(id) {
 }
 
 // Business Logic for Places ---------
-function Place(cityName, stateName, countryName) {
-  this.cityName = cityName,
-  this.stateName = stateName,
-  this.countryName = countryName
+function Place(firstName, lastName, phoneNumber) {
+  this.firstName = firstName,
+  this.lastName = lastName,
+  this.phoneNumber = phoneNumber
 }
 
 Place.prototype.fullName = function() {
@@ -49,16 +49,51 @@ Place.prototype.fullName = function() {
 }
 
 // User Interface Logic ---------
-var myTravels = new Travel();
+var travel = new Travel();
+
+function displayPlaceDetails(travelToDisplay) {
+  var placesList = $("ul#places");
+  var htmlForPlaceInfo = "";
+  travelToDisplay.places.forEach(function(place) {
+    htmlForPlaceInfo += "<li id=" + place.id + ">" + place.firstName + " " + place.lastName + "</li>";
+  });
+  placesList.html(htmlForPlaceInfo);
+};
+
+function showPlace(placeId) {
+  var place = travel.findPlace(placeId);
+  $("#show-place").show();
+  $(".city-name").html(place.firstName);
+  $(".state-name").html(place.lastName);
+  $(".phone-number").html(place.phoneNumber);
+  var buttons = $("#buttons");
+  buttons.empty();
+  buttons.append("<button class='deleteButton' id=" + place.id + ">Delete</button>");
+}
+
+function attachPlaceListeners() {
+  $("ul#places").on("click", "li", function() {
+    showPlace(this.id);
+  });
+  $("#buttons").on("click", ".deleteButton", function() {
+    travel.deletePlace(this.id);
+    $("#show-place").hide();
+    displayPlaceDetails(travel);
+  });
+};
 
 $(document).ready(function() {
+  attachPlaceListeners();
   $("form#new-place").submit(function(event) {
     event.preventDefault();
     var inputtedCityName = $("input#new-city-name").val();
     var inputtedStateName = $("input#new-state-name").val();
-    var inputtedCountryName = $("input#new-country-name").val();
-    var newPlace = new Place(inputtedCityName, inputtedStateName, inputtedCountryName);
-    myTravels.addPlace(newPlace);
-    console.log(myTravels.places);
+    var inputtedPhoneNumber = $("input#new-phone-number").val();
+    $("input#new-city-name").val("");
+    $("input#new-state-name").val("");
+    $("input#new-phone-number").val("");
+    var newPlace = new Place(inputtedCityName, inputtedStateName, inputtedPhoneNumber);
+    travel.addPlace(newPlace);
+    displayPlaceDetails(travel);
   })
 })
