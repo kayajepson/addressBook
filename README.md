@@ -20,7 +20,7 @@ _No Bugs_
 
 ## Support and contact details
 
-_For any question please contact mostafa_ghasemi63@yahoo.com  OR jepsonkaya@gmail.com_
+_For any question please contact mostafa_ghasemi63@yahoo.com  OR jepsonkaya(at)gmail(dot)com_
 
 ## Technologies Used
 
