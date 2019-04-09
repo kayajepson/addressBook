@@ -1,35 +1,40 @@
-// Business Logic for Travel ---------
-function Travel() {
-  this.places = [],
+// Business Logic for AddressBook ---------
+function AddressBook() {
+  this.contacts = [],
   this.currentId = 0
 }
 
-Travel.prototype.addPlace = function(place) {
-  place.id = this.assignId();
-  this.places.push(place);
+AddressBook.prototype.addContact = function(contact) {
+  contact.id = this.assignId();
+  this.contacts.push(contact);
 }
 
-Travel.prototype.assignId = function() {
+Contact.prototype.addAddress = function(address) {
+  console.log(this.address);
+  this.address.push(address);
+}
+
+AddressBook.prototype.assignId = function() {
   this.currentId += 1;
   return this.currentId;
 }
 
-Travel.prototype.findPlace = function(id) {
-  for (var i=0; i< this.places.length; i++) {
-    if (this.places[i]) {
-      if (this.places[i].id == id) {
-        return this.places[i];
+AddressBook.prototype.findContact = function(id) {
+  for (var i=0; i< this.contacts.length; i++) {
+    if (this.contacts[i]) {
+      if (this.contacts[i].id == id) {
+        return this.contacts[i];
       }
     }
   };
   return false;
 }
 
-Travel.prototype.deletePlace = function(id) {
-  for (var i=0; i< this.places.length; i++) {
-    if (this.places[i]) {
-      if (this.places[i].id == id) {
-        delete this.places[i];
+AddressBook.prototype.deleteContact = function(id) {
+  for (var i=0; i< this.contacts.length; i++) {
+    if (this.contacts[i]) {
+      if (this.contacts[i].id == id) {
+        delete this.contacts[i];
         return true;
       }
     }
@@ -37,63 +42,78 @@ Travel.prototype.deletePlace = function(id) {
   return false;
 }
 
-// Business Logic for Places ---------
-function Place(firstName, lastName, phoneNumber) {
+// Business Logic for Contacts ---------
+function Contact(firstName, lastName, phoneNumber) {
   this.firstName = firstName,
   this.lastName = lastName,
-  this.phoneNumber = phoneNumber
+  this.phoneNumber = phoneNumber,
+  this.address = []
 }
 
-Place.prototype.fullName = function() {
+function Address(streetAddress, emailAddress) {
+  this.streetAddress = streetAddress,
+  this.emailAddress = emailAddress
+}
+
+Contact.prototype.fullName = function() {
   return this.firstName + " " + this.lastName;
 }
 
 // User Interface Logic ---------
-var travel = new Travel();
+var addressBook = new AddressBook();
+var contactAddress = new Contact();
 
-function displayPlaceDetails(travelToDisplay) {
-  var placesList = $("ul#places");
-  var htmlForPlaceInfo = "";
-  travelToDisplay.places.forEach(function(place) {
-    htmlForPlaceInfo += "<li id=" + place.id + ">" + place.firstName + " " + place.lastName + "</li>";
+function displayContactDetails(addressBookToDisplay) {
+  var contactsList = $("ul#contacts");
+  var htmlForContactInfo = "";
+  addressBookToDisplay.contacts.forEach(function(contact) {
+    htmlForContactInfo += "<li id=" + contact.id + ">" + contact.firstName + " " + contact.lastName + "</li>";
   });
-  placesList.html(htmlForPlaceInfo);
+  contactsList.html(htmlForContactInfo);
 };
 
-function showPlace(placeId) {
-  var place = travel.findPlace(placeId);
-  $("#show-place").show();
-  $(".city-name").html(place.firstName);
-  $(".state-name").html(place.lastName);
-  $(".phone-number").html(place.phoneNumber);
+function showContact(contactId) {
+  var contact = addressBook.findContact(contactId);
+  $("#show-contact").show();
+  $(".first-name").html(contact.firstName);
+  $(".last-name").html(contact.lastName);
+  $(".phone-number").html(contact.phoneNumber);
+  $(".email-address").html(contact.emailAddress);
+  $(".street-address").html(contact.streetAddress);
   var buttons = $("#buttons");
   buttons.empty();
-  buttons.append("<button class='deleteButton' id=" + place.id + ">Delete</button>");
+  buttons.append("<button class='deleteButton' id=" + contact.id + ">Delete</button>");
 }
 
-function attachPlaceListeners() {
-  $("ul#places").on("click", "li", function() {
-    showPlace(this.id);
+function attachContactListeners() {
+  $("ul#contacts").on("click", "li", function() {
+    showContact(this.id);
   });
   $("#buttons").on("click", ".deleteButton", function() {
-    travel.deletePlace(this.id);
-    $("#show-place").hide();
-    displayPlaceDetails(travel);
+    addressBook.deleteContact(this.id);
+    $("#show-contact").hide();
+    displayContactDetails(addressBook);
   });
 };
 
 $(document).ready(function() {
-  attachPlaceListeners();
-  $("form#new-place").submit(function(event) {
+  attachContactListeners();
+  $("form#new-contact").submit(function(event) {
     event.preventDefault();
-    var inputtedCityName = $("input#new-city-name").val();
-    var inputtedStateName = $("input#new-state-name").val();
+    var inputtedFirstName = $("input#new-first-name").val();
+    var inputtedLastName = $("input#new-last-name").val();
     var inputtedPhoneNumber = $("input#new-phone-number").val();
-    $("input#new-city-name").val("");
-    $("input#new-state-name").val("");
+    var inputtedEmailAddress = $("input#new-email-address").val();
+    var inputtedStreetAddress = $("input#new-street-address").val();
+    $("input#new-first-name").val("");
+    $("input#new-last-name").val("");
     $("input#new-phone-number").val("");
-    var newPlace = new Place(inputtedCityName, inputtedStateName, inputtedPhoneNumber);
-    travel.addPlace(newPlace);
-    displayPlaceDetails(travel);
+    $("input#new-email-address").val("");
+    $("input#new-street-address").val("");
+    var newContact = new Contact(inputtedFirstName, inputtedLastName, inputtedPhoneNumber, inputtedEmailAddress, inputtedStreetAddress);
+    var newAddress = new Address(inputtedEmailAddress, inputtedStreetAddress);
+    addressBook.addContact(newContact);
+    contactAddress.addAddress(newAddress);
+    displayContactDetails(addressBook);
   })
 })
