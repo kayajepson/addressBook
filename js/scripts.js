@@ -91,6 +91,10 @@ function showContact(contactId) {
 }
 
 function attachContactListeners() {
+  $("#contacts").on("click", function () {
+    $("ul#contacts").css("background-color:blue;")
+  })
+
   $("ul#contacts").on("click", "li", function() {
     showContact(this.id);
   });
@@ -114,6 +118,11 @@ $(document).ready(function() {
     var inputtedStreetAddress = $("input#new-street-address").val();
     var inputtedEmailAddress = $("input#new-email-address").val();
     var inputtedEmailAddress2 = $("input#new-email-address2").val();
+    // if (inputtedEmailAddress2) {
+    //   $("#email2").show();
+    // } else {
+    //   $("#email2").hide();
+    // }
     $("input#new-first-name").val("");
     $("input#new-last-name").val("");
     $("input#new-phone-number").val("");
