@@ -1,7 +1,6 @@
 // Business Logic for AddressBook ---------
 function AddressBook() {
   this.contacts = [],
-  console.log(this.contacts);
   this.currentId = 0
 }
 
@@ -10,10 +9,12 @@ AddressBook.prototype.addContact = function(contact) {
   this.contacts.push(contact);
 }
 
-Contact.prototype.addAddress = function(address) {
-  this.address.push(address);
-  console.log(this.address);
-}
+// Contact.prototype.addAddress = function(addressName, address) {
+//   // this.address.push(address);
+//
+//   this.address.addressName = address;
+// }
+
 
 AddressBook.prototype.assignId = function() {
   this.currentId += 1;
@@ -44,19 +45,15 @@ AddressBook.prototype.deleteContact = function(id) {
 }
 
 // Business Logic for Contacts ---------
-function Contact(firstName, lastName, phoneNumber, streetAddress, emailAddress) {
+function Contact(firstName, lastName, phoneNumber, emailAddress, streetAddress) {
   this.firstName = firstName,
   this.lastName = lastName,
   this.phoneNumber = phoneNumber,
   this.address = new Address(emailAddress, streetAddress)
-  //
-  // this.address = {
-  //   streetAddress: streetAddress,
-  //   emailAddress: emailAddress,
-  // }
+
 }
 
-function Address(streetAddress, emailAddress) {
+function Address(emailAddress, streetAddress) {
   this.streetAddress = streetAddress,
   this.emailAddress = emailAddress
 }
